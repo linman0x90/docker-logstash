@@ -13,14 +13,14 @@ This repository contains **Dockerfile** of [Logstash](http://logstash.net/) for 
 
 1. Install [Docker](https://www.docker.com/).
 
-2. Download [automated build](https://registry.hub.docker.com/u/linman/docker-logstash/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull linman/docker-logstash`
+2. Download [automated build](https://registry.hub.docker.com/u/linman/logstash/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull linman/logstash`
 
-   (alternatively, you can build an image from Dockerfile: `docker build -t="linman/docker-logstash" github.com/linman/docker-logstash`)
+   (alternatively, you can build an image from Dockerfile: `docker build -t="linman/logstash" github.com/linman/docker-logstash`)
 
 
 ### Usage
 
-    docker run -d -p 514:514 -p 5043:5043 -p 9292:9292 linman/docker-logstash
+    docker run -d -p 514:514 -p 5043:5043 -p 9292:9292 linman/logstash
 
 #### Attach persistent/shared directories
 
@@ -29,7 +29,7 @@ This repository contains **Dockerfile** of [Logstash](http://logstash.net/) for 
   2. Start a container by mounting data directory and specifying the custom configuration file:
 
     ```sh
-    docker run -d -p 514:514 -p 5043:5043 -p 9292:9292 -v <data-dir>:/data linman/docker-logstash
+    docker run -d -p 514:514 -p 5043:5043 -p 9292:9292 -v <data-dir>:/data linman/logstash
     ```
 
 After few seconds, open `http://<host>:9292/index.html#/dashboard/file/logstash.json` to see the result.
