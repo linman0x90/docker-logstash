@@ -7,18 +7,23 @@
 FROM      dockerfile/java
 MAINTAINER Lance Inman "linman0x90@gmail.com"
 
-RUN apt-get update && apt-get install -y ca-certificates wget
-RUN wget https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz -O /tmp/logstash.tar.gz 2> /dev/null
+ENV LS_VER 1.4.2
 
-RUN tar zxvf /tmp/logstash.tar.gz -C /opt && mv /opt/logstash-1.4.2 /opt/logstash && rm -rf /tmp/logstash.tar.gz
 
-RUN [ -d /opt/certs ] || mkdir /opt/certs
-RUN [ -f /opt/certs/logstash-forwarder.cr ] || openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout /opt/certs/logstash-forwarder.key -out /opt/certs/logstash-forwarder.cr
+#Install Logstash
+RUN wget https://download.elasticsearch.org/logstash/logstash/logstash-$LS_VER.tar.gz -O /tmp/logstash.tar.gz 2> /dev/null
+RUN tar zxvf /tmp/logstash.tar.gz -C /opt && mv /opt/logstash-$LS_VER /opt/logstash && rm -rf /tmp/logstash.tar.gz
 
-VOLUME ["/opt/conf", "/opt/certs"]
+COPY logstash.conf /opt/logstash/
+COPY logstash.sh /usr/local/sbin/
+RUN chmod +x /usr/local/sbin/logstash.sh
+
+
+VOLUME ["/data"]
 
 EXPOSE 514
 EXPOSE 5043
 EXPOSE 9292
 
-CMD /opt/logstash/bin/logstash agent -f /opt/conf/logstash.conf
+CMD ["/usr/local/sbin/logstash.sh"]
+
